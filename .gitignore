@@ -1,0 +1,25 @@
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# node
+node_modules/
+.next/
+out/
+npm-debug.log*
+yarn-error.log*
+
+# editors / os
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
