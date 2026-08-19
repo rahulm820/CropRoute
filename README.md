@@ -19,13 +19,15 @@ collectors.
 
 ## Running locally
 
-Nothing runs yet — this is the scaffold (issue #1). Once issue #2 lands:
-
 ```bash
-cp infra/.env.example infra/.env   # fill in DB creds + BRIGHTDATA_API_KEY
+cp infra/.env.example infra/.env   # fill in DATA_GOV_API_KEY + BRIGHTDATA_API_KEY
 docker compose -f infra/docker-compose.yml up
 ```
 
-Frontend on `http://localhost:3000`, backend on `http://localhost:8000`.
+Frontend on `http://localhost:3000`, backend on `http://localhost:8000`, Postgres on
+`5432`, Redis on `6379`. Secrets live in `infra/.env` only — never commit it.
 
-Secrets go in `.env` only — never commit them.
+Postgres and Redis are fully wired. The `backend` and `frontend` services run off base
+images and install deps on start, so they idle with a "waiting" log line until issues #3
+and #4 add `backend/requirements.txt` and `frontend/package.json` — then they boot on the
+next `up`, no compose changes needed.

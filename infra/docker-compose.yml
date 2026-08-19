@@ -1,0 +1,56 @@
+name: croproute
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    env_file: .env
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  # ponytail: base image + install-on-start instead of a Dockerfile — fine for dev,
+  # write real Dockerfiles when we deploy. The `[ -f ... ]` guard keeps `up` clean
+  # until issues #3/#4 add requirements.txt / package.json.
+  backend:
+    image: python:3.12-slim
+    working_dir: /app
+    command: 'sh -c "[ -f requirements.txt ] || { echo backend waiting - no requirements.txt yet, see issue 3; sleep infinity; }; pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"'
+    env_file: .env
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ../backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    command: 'sh -c "[ -f package.json ] || { echo frontend waiting - no package.json yet, see issue 4; sleep infinity; }; npm install && npm run dev"'
+    env_file: .env
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ../frontend:/app
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
