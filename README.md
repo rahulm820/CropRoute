@@ -15,7 +15,26 @@ collectors.
 | `scrapers/` | Bright Data Scraper Studio collector configs, one per state portal |
 | `mcp/` | Optional MCP tool wrapper (`search_crop_prices`) — stretch goal |
 | `infra/` | `docker-compose.yml` + `.env.example` |
-| `docs/` | [Architecture](docs/ARCHITECTURE.md) |
+| `docs/` | Product, architecture, design system, API contracts, backlog (see below) |
+
+## Docs
+
+Start at [CLAUDE.md](CLAUDE.md) if you are an agent, [docs/PRODUCT.md](docs/PRODUCT.md)
+if you are a human.
+
+| Doc | Covers |
+|---|---|
+| [CLAUDE.md](CLAUDE.md) | Agent orientation: conventions, layout, non-negotiables |
+| [docs/PRODUCT.md](docs/PRODUCT.md) | Users, jobs, non-goals, glossary of Indian agri terms |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Services, endpoints, DB schema |
+| [docs/PAGES.md](docs/PAGES.md) | Route map, per-element data sources |
+| [docs/UI-DESIGN.md](docs/UI-DESIGN.md) | Tokens, components, states, map palette, motion |
+| [docs/API.md](docs/API.md) | Request/response contracts |
+| [docs/DATA-SOURCES.md](docs/DATA-SOURCES.md) | Every upstream, auth, cadence, legality |
+| [docs/SELF-HEAL.md](docs/SELF-HEAL.md) | Collector state machine and the demo break/heal |
+| [docs/BACKLOG.md](docs/BACKLOG.md) | Issues 1-40 with status |
+| [docs/DEMO.md](docs/DEMO.md) | Demo runbook |
+| [scrapers/README.md](scrapers/README.md) | Collector registry |
 
 ## Running locally
 
