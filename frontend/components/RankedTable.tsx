@@ -38,6 +38,8 @@ interface RankedTableProps {
   selectedStateId?: number | null;
   /** Called when a row is clicked, with the row's state_id. */
   onSelectRow?: (stateId: number) => void;
+  /** Called when a mandi row is clicked, with the row's mandi_id. Opens DealerDrawer. */
+  onSelectMandi?: (mandiId: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -211,6 +213,7 @@ export default function RankedTable({
   loading = false,
   selectedStateId,
   onSelectRow,
+  onSelectMandi,
 }: RankedTableProps) {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<SortDirection>("asc");
@@ -348,12 +351,24 @@ export default function RankedTable({
             return (
             <tr
               key={`${result.state_id}-${result.mandi_id}`}
-              onClick={() => onSelectRow?.(result.state_id)}
+              onClick={() => {
+                onSelectRow?.(result.state_id);
+                onSelectMandi?.(result.mandi_id);
+              }}
               className={`
                 transition-colors duration-150 ease-out
                 ${isSelected ? "bg-brand-soft" : "bg-surface hover:bg-brand-soft"}
-                ${onSelectRow ? "cursor-pointer" : ""}
+                ${onSelectRow || onSelectMandi ? "cursor-pointer" : ""}
               `}
+              role="row"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelectRow?.(result.state_id);
+                  onSelectMandi?.(result.mandi_id);
+                }
+              }}
             >
               {COLUMNS.map((col) => (
                 <td

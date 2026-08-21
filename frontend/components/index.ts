@@ -7,4 +7,6 @@ export { default as ErrorState } from "./states/ErrorState";
 export { default as SearchBar } from "./SearchBar";
 export { default as RankedTable } from "./RankedTable";
 export { default as IndiaMap } from "./IndiaMap";
+export { default as DealerDrawer } from "./DealerDrawer";
+export { default as ThemeToggle } from "./ThemeToggle";
 export type { SearchResult, SearchResponse } from "./RankedTable";

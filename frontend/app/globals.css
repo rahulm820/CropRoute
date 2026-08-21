@@ -19,8 +19,10 @@
   --color-danger: #B3261E;
 }
 
+/* Dark mode: driven by data-theme attribute set via inline script + ThemeToggle.
+   The media query fallback covers the initial paint before the script runs. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-bg: #101210;
     --color-surface: #191C18;
     --color-surface-2: #232720;
@@ -36,6 +38,23 @@
     --color-warn: #E39A2B;
     --color-danger: #E5665C;
   }
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #101210;
+  --color-surface: #191C18;
+  --color-surface-2: #232720;
+  --color-border: #333829;
+  --color-text: #F2F1EA;
+  --color-text-muted: #A3AB98;
+  --color-brand: #4BA372;
+  --color-brand-strong: #2E7D4F;
+  --color-brand-soft: #1B2E22;
+  --color-accent: #E39A2B;
+  --color-accent-soft: #33260F;
+  --color-ok: #4BA372;
+  --color-warn: #E39A2B;
+  --color-danger: #E5665C;
 }
 
 @layer utilities {
@@ -311,5 +330,111 @@
 .collector-skeleton-bar {
   height: 12px;
   border-radius: 9999px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  DealerDrawer — right slide-over                                    */
+/* ------------------------------------------------------------------ */
+
+.dealer-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgb(0 0 0 / 0);
+  pointer-events: none;
+  transition: background 220ms ease-out;
+}
+
+.dealer-drawer-backdrop-open {
+  background: rgb(0 0 0 / 0.3);
+  pointer-events: auto;
+}
+
+.dealer-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  width: 420px;
+  max-width: 100vw;
+  background: var(--color-bg);
+  border-left: 1px solid var(--color-border);
+  box-shadow: -4px 0 24px rgb(0 0 0 / 0.08);
+  transform: translateX(100%);
+  transition: transform 220ms ease-out;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.dealer-drawer-open {
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dealer-drawer,
+  .dealer-drawer-backdrop {
+    transition: none;
+  }
+}
+
+/* Pulse dot for "fetching contacts" loading state */
+@keyframes dealer-drawer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.dealer-drawer-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-brand);
+  animation: dealer-drawer-pulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dealer-drawer-pulse-dot {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  ThemeToggle                                                        */
+/* ------------------------------------------------------------------ */
+
+.theme-toggle-button {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  transition: border-color 150ms ease-out, background 150ms ease-out,
+    box-shadow 150ms ease-out;
+}
+
+.theme-toggle-button:hover {
+  border-color: var(--color-brand);
+  color: var(--color-text);
+}
+
+.theme-toggle-icon {
+  opacity: 0.35;
+  transition: opacity 150ms ease-out;
+}
+
+.theme-toggle-icon-active {
+  opacity: 1;
 }
 

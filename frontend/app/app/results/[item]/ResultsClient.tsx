@@ -5,6 +5,7 @@ import {
   SearchBar,
   RankedTable,
   IndiaMap,
+  DealerDrawer,
   EmptyState,
   ErrorState,
 } from "@/components";
@@ -74,6 +75,9 @@ export default function ResultsClient({
 }: ResultsClientProps) {
   /* ---- Shared selection state — single source of truth ---- */
   const [selectedStateId, setSelectedStateId] = useState<number | null>(null);
+
+  /* ---- Mandi drawer state ---- */
+  const [selectedMandiId, setSelectedMandiId] = useState<string | null>(null);
 
   /* ---- Metric toggle ---- */
   const [metric, setMetric] = useState<"price" | "arrivals">("price");
@@ -204,6 +208,9 @@ export default function ResultsClient({
                     stateId === selectedStateId ? null : stateId
                   )
                 }
+                onSelectMandi={(mandiId) =>
+                  setSelectedMandiId(String(mandiId))
+                }
               />
             </div>
 
@@ -265,6 +272,12 @@ export default function ResultsClient({
           <div className="map-skeleton" aria-hidden="true" />
         </div>
       )}
+
+      {/* ---- Dealer drawer ---- */}
+      <DealerDrawer
+        mandiId={selectedMandiId}
+        onClose={() => setSelectedMandiId(null)}
+      />
     </main>
   );
 }
