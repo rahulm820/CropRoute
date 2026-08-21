@@ -5,4 +5,5 @@ export { default as EmptyState } from "./states/EmptyState";
 export { default as ErrorState } from "./states/ErrorState";
 export { default as SearchBar } from "./SearchBar";
 export { default as RankedTable } from "./RankedTable";
+export { default as IndiaMap } from "./IndiaMap";
 export type { SearchResult, SearchResponse } from "./RankedTable";
