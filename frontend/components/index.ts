@@ -9,4 +9,8 @@ export { default as RankedTable } from "./RankedTable";
 export { default as IndiaMap } from "./IndiaMap";
 export { default as DealerDrawer } from "./DealerDrawer";
 export { default as ThemeToggle } from "./ThemeToggle";
+export { default as WeatherScene } from "./WeatherScene";
+export { default as NewsCard } from "./NewsCard";
 export type { SearchResult, SearchResponse } from "./RankedTable";
+export type { WeatherCondition } from "./WeatherScene";
+export type { NewsItem } from "./NewsCard";
