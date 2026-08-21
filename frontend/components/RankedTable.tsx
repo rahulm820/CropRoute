@@ -34,6 +34,10 @@ interface RankedTableProps {
   data: SearchResponse | null;
   /** True while the API call is in flight. */
   loading?: boolean;
+  /** Currently selected state ID — drives persistent row highlight. */
+  selectedStateId?: number | null;
+  /** Called when a row is clicked, with the row's state_id. */
+  onSelectRow?: (stateId: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -202,7 +206,12 @@ function SearchIcon() {
 /*  RankedTable                                                        */
 /* ------------------------------------------------------------------ */
 
-export default function RankedTable({ data, loading = false }: RankedTableProps) {
+export default function RankedTable({
+  data,
+  loading = false,
+  selectedStateId,
+  onSelectRow,
+}: RankedTableProps) {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<SortDirection>("asc");
 
@@ -334,14 +343,17 @@ export default function RankedTable({ data, loading = false }: RankedTableProps)
           </tr>
         </thead>
         <tbody>
-          {sortedResults.map((result) => (
+          {sortedResults.map((result) => {
+            const isSelected = selectedStateId != null && result.state_id === selectedStateId;
+            return (
             <tr
               key={`${result.state_id}-${result.mandi_id}`}
-              className="
-                bg-surface
+              onClick={() => onSelectRow?.(result.state_id)}
+              className={`
                 transition-colors duration-150 ease-out
-                hover:bg-brand-soft
-              "
+                ${isSelected ? "bg-brand-soft" : "bg-surface hover:bg-brand-soft"}
+                ${onSelectRow ? "cursor-pointer" : ""}
+              `}
             >
               {COLUMNS.map((col) => (
                 <td
@@ -357,7 +369,8 @@ export default function RankedTable({ data, loading = false }: RankedTableProps)
                 </td>
               ))}
             </tr>
-          ))}
+            );
+          })}
         </tbody>
       </table>
     </div>
