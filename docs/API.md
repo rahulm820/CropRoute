@@ -159,18 +159,26 @@ Merged, reverse-chronological. `type`: `all | post | news`.
 ## Collectors
 
 ### `GET /api/collectors/status`
+One entry per registered collector (`scrapers/*.json`). `status` is `null` until the
+collector's first run lands - never guessed.
 ```json
 [{"collector": "punjab_apmc", "target_state": "Punjab",
   "target_url": "https://...", "status": "self_healed",
   "last_run": "...", "field_completeness": 0.92,
-  "runs": [{"status": "healthy", "ran_at": "...", "notes": ""},
+  "runs": [{"status": "healthy", "ran_at": "...", "notes": "", "field_completeness": 0.93},
            {"status": "broken", "ran_at": "...", "notes": "office_phone empty in 40/41 rows"},
-           {"status": "self_healed", "ran_at": "...", "notes": "re-derived extraction"}]}]
+           {"status": "self_healed", "ran_at": "...", "notes": "heal verified"}]}]
 ```
+`runs` is newest-first history (10 max); `notes` carries the evidence string from
+SELF-HEAL.md ("office_phone empty in 40/41 rows, baseline 0.95").
 
 ### `POST /api/collectors/trigger`
 ```json
-{"collector": "punjab_apmc", "force_break": false}
--> 202 {"run_id": "...", "status": "running"}
+{"collector": "punjab_apmc", "force_break": false, "heal": false}
+-> 202 {"run_id": "...", "status": "running", "collector": "...",
+        "force_break": false, "heal": false}
 ```
-`force_break` is the demo lever - see SELF-HEAL.md.
+Queues a monitor cycle in the background (a real Bright Data run can poll for minutes)
+and returns immediately - poll `GET /api/collectors/status` for the new rows. Omitting
+`collector` cycles every registered collector. Unknown name -> `404`. `force_break` is
+the demo break lever, `heal` the demo heal lever - see SELF-HEAL.md.
