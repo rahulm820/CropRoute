@@ -34,6 +34,8 @@ services:
       - "${BACKEND_PORT:-8000}:8000"
     volumes:
       - ../backend:/app
+      # collector configs for brightdata_service (issue #17) live outside backend/
+      - ../scrapers:/scrapers:ro
     depends_on:
       postgres:
         condition: service_healthy
