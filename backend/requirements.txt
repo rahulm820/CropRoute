@@ -3,3 +3,5 @@ uvicorn[standard]==0.34.0
 sqlalchemy==2.0.36
 psycopg[binary]==3.2.3
 httpx==0.28.1
+redis==5.2.1
+APScheduler==3.11.0

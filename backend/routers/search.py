@@ -14,11 +14,13 @@ import datetime as dt
 from decimal import Decimal
 
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import JSONResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from db.session import get_db
 from models import Commodity, Mandi, Price, State
+from services import search_cache
 
 router = APIRouter()
 
@@ -111,6 +113,15 @@ def search_prices(
     if state_row is not None:
         filters.append(Mandi.state_id == state_row.id)
 
+    # cache only fully-resolved queries; the unknown-item/state paths above are
+    # already cheap and would need their own key space for the echoed raw input
+    key = search_cache.cache_key(
+        commodity.id, state_row.id if state_row is not None else None, limit
+    )
+    cached = search_cache.get_cached(key)
+    if cached is not None:
+        return JSONResponse(content=cached, headers={"X-Cache": "HIT"})
+
     # latest reported day per mandi; uq_price_day makes that day's row unique
     latest_day = (
         select(Price.mandi_id.label("mandi_id"), func.max(Price.date).label("date"))
@@ -163,8 +174,10 @@ def search_prices(
     ]
 
     last_refreshed = max((r["date"] for r in latest_rows), default=None)
-    return {
-        "item": commodity.name if commodity else item.strip(),
+    payload = {
+        "item": commodity.name,
         "last_refreshed": last_refreshed.isoformat() if last_refreshed else None,
         "results": results,
     }
+    search_cache.set_cached(key, payload)
+    return JSONResponse(content=payload, headers={"X-Cache": "MISS"})

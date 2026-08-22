@@ -37,7 +37,7 @@ from sqlalchemy.orm import Session
 
 from db.session import SessionLocal
 from models import Commodity, Mandi, Price, State
-from services import agmarknet_service
+from services import agmarknet_service, search_cache
 from services.agmarknet_service import AgmarknetError
 
 log = logging.getLogger(__name__)
@@ -260,6 +260,9 @@ def run_refresh() -> RefreshRunSummary:
             "refresh run had %d failure(s): %s",
             len(failed), ", ".join(f"{r.commodity} ({r.error})" for r in failed),
         )
+    # any successful upsert above changed rankings, so cached /api/search responses
+    # are stale the moment this run lands - invalidate even if some commodities failed
+    search_cache.invalidate_all()
     return summary
 
 

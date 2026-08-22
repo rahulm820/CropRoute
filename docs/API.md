@@ -49,6 +49,12 @@ Ranked: modal price ascending, then arrivals descending.
 ```
 No data -> `200` with `"results": []`. Never 404, never 500.
 
+Cached in Redis keyed by commodity+state+limit (issue #11). Every response carries
+`X-Cache: HIT|MISS`. TTL = the baseline refresh interval (`REFRESH_INTERVAL_HOURS`),
+and `run_refresh()` invalidates the cache explicitly on completion, so rankings are
+at most one refresh stale even if Redis expiry is missed. Redis down degrades to
+uncached DB reads - still 200.
+
 ### `GET /api/mandi/:id`
 Dealer contacts are enriched live on a cache miss (>7 days stale). Slow first call is
 expected and intentional.
