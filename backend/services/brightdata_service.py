@@ -90,14 +90,21 @@ def load_collector(name: str) -> dict:
     return cfg
 
 
+def _http_client() -> httpx.Client:
+    """Client factory - the test seam. Patching this swaps the transport while the
+    real request path (auth header, token check, user agent) still runs."""
+    return httpx.Client()
+
+
 def _send(method: str, url: str, *, json_body=None, timeout: float) -> httpx.Response:
-    """One HTTP call. Module-level seam: tests patch this with a MockTransport."""
+    """One HTTP call."""
     headers = {
         "Authorization": f"Bearer {_token()}",
         "Content-Type": "application/json",
         **HEADERS,
     }
-    return httpx.request(method, url, headers=headers, json=json_body, timeout=timeout)
+    return _http_client().request(method, url, headers=headers, json=json_body,
+                                  timeout=timeout)
 
 
 def _api(method: str, path_qs: str, *, json_body=None, retries: int = 3,
