@@ -97,8 +97,20 @@ function matchGeoNameToApiState(
 /*  Sequential, single-hue. Darker = more.                             */
 /* ------------------------------------------------------------------ */
 
-const PRICE_RAMP = ["#E4F1E8", "#B5D9BF", "#7BBF95", "#4A9E6B", "#2E7D4F"];
-const ARRIVALS_RAMP = ["#FBF0DC", "#EDD4A3", "#D9B56A", "#C79831", "#C77D0A"];
+const PRICE_RAMP = [
+  "var(--color-brand-soft)",
+  "color-mix(in srgb, var(--color-brand) 25%, var(--color-brand-soft))",
+  "color-mix(in srgb, var(--color-brand) 50%, var(--color-brand-soft))",
+  "color-mix(in srgb, var(--color-brand) 75%, var(--color-brand-soft))",
+  "var(--color-brand)",
+];
+const ARRIVALS_RAMP = [
+  "var(--color-accent-soft)",
+  "color-mix(in srgb, var(--color-accent) 25%, var(--color-accent-soft))",
+  "color-mix(in srgb, var(--color-accent) 50%, var(--color-accent-soft))",
+  "color-mix(in srgb, var(--color-accent) 75%, var(--color-accent-soft))",
+  "var(--color-accent)",
+];
 
 function getColorForQuantile(
   value: number,

@@ -132,7 +132,7 @@ function PrimaryLink({
       }`}
       style={{
         background: "var(--color-brand)",
-        color: "#FFFFFF",
+        color: "#ffffff",
         boxShadow: "0 1px 2px rgb(0 0 0 / 0.06)",
       }}
       onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-brand-strong)")}
