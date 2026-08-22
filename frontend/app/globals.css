@@ -2,6 +2,250 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ================================================================== */
+/*  App Shell — persistent navigation bar for /app/* routes            */
+/* ================================================================== */
+
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+}
+
+.app-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* ---- Logo ---- */
+
+.app-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+  flex-shrink: 0;
+  transition: color 150ms ease-out;
+}
+
+.app-nav-logo:hover {
+  color: var(--color-brand);
+}
+
+.app-nav-logo:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.app-nav-logo-icon {
+  color: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.app-nav-logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Desktop nav links ---- */
+
+.app-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: 8px;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease-out, background 150ms ease-out,
+    border-color 150ms ease-out;
+  white-space: nowrap;
+}
+
+.app-nav-link:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.app-nav-link:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Active: color + bold weight + underline — not color-only (a11y). */
+.app-nav-link-active {
+  color: var(--color-brand);
+  font-weight: 600;
+  border-bottom-color: var(--color-brand);
+}
+
+.app-nav-link-active:hover {
+  color: var(--color-brand-strong);
+  background: var(--color-brand-soft);
+}
+
+/* ---- Right-side actions ---- */
+
+.app-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ---- Hamburger button (hidden on desktop) ---- */
+
+.app-nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 150ms ease-out;
+}
+
+.app-nav-hamburger:hover {
+  border-color: var(--color-brand);
+}
+
+.app-nav-hamburger:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+.app-hamburger-bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: 1px;
+  transition: transform 150ms ease-out, opacity 150ms ease-out;
+}
+
+/* Animated X when open */
+.app-hamburger-bar-open:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.app-hamburger-bar-open:nth-child(2) {
+  opacity: 0;
+}
+
+.app-hamburger-bar-open:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ---- Mobile menu dropdown ---- */
+
+.app-mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 24px 16px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-mobile-menu-link {
+  display: block;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+  transition: color 150ms ease-out, background 150ms ease-out,
+    border-color 150ms ease-out;
+}
+
+.app-mobile-menu-link:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.app-mobile-menu-link:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Active: brand color + bold + left border — accessible (not color-only). */
+.app-mobile-menu-link-active {
+  color: var(--color-brand);
+  font-weight: 600;
+  border-left-color: var(--color-brand);
+  background: var(--color-brand-soft);
+}
+
+/* ---- Responsive collapse ---- */
+
+@media (max-width: 768px) {
+  .app-nav-links {
+    display: none;
+  }
+
+  .app-nav-hamburger {
+    display: flex;
+  }
+
+  .app-mobile-menu-open {
+    display: flex;
+  }
+}
+
+/* ---- Content area ---- */
+
+.app-content {
+  /* Child pages handle their own max-width (max-w-content = 1280px)
+     and padding. The shell just provides the semantic wrapper. */
+}
+
+/* Reduce motion for nav transitions */
+@media (prefers-reduced-motion: reduce) {
+  .app-nav-link,
+  .app-mobile-menu-link,
+  .app-nav-hamburger,
+  .app-hamburger-bar,
+  .app-nav-logo {
+    transition: none;
+  }
+}
+
+
 :root {
   --color-bg: #FBFAF6;
   --color-surface: #FFFFFF;
@@ -406,10 +650,7 @@
 /* ------------------------------------------------------------------ */
 
 .theme-toggle-button {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 30;
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -422,6 +663,7 @@
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
   transition: border-color 150ms ease-out, background 150ms ease-out,
     box-shadow 150ms ease-out;
+  flex-shrink: 0;
 }
 
 .theme-toggle-button:hover {
