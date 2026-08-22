@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_Devanagari } from "next/font/google";
-import ThemeToggle from "@/components/ThemeToggle";
+
 import "./globals.css";
 
 const inter = Inter({
@@ -51,7 +51,6 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="font-sans bg-bg text-text antialiased min-h-screen" suppressHydrationWarning>
-        <ThemeToggle />
         {children}
       </body>
     </html>
