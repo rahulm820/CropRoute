@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Noto_Sans_Devanagari } from "next/font/google";
 
 import "./globals.css";
+import DeploymentNoticeModal from "@/components/DeploymentNoticeModal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="font-sans bg-bg text-text antialiased min-h-screen" suppressHydrationWarning>
+        <DeploymentNoticeModal />
         {children}
       </body>
     </html>

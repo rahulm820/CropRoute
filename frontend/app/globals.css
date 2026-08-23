@@ -1448,3 +1448,62 @@
   }
 }
 
+/* ------------------------------------------------------------------ */
+/*  DeploymentNoticeModal — global overlay modal                       */
+/* ------------------------------------------------------------------ */
+
+.notice-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgb(0 0 0 / 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  transition: opacity 200ms ease-out;
+}
+
+.notice-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.2);
+  overflow-y: auto;
+  transition: transform 200ms ease-out, opacity 200ms ease-out;
+}
+
+.notice-modal-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface-2);
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.notice-modal-media iframe,
+.notice-modal-media video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice-modal-backdrop,
+  .notice-modal-card {
+    transition: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+
