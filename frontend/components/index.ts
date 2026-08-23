@@ -15,6 +15,7 @@ export { default as NewsCard } from "./NewsCard";
 export { default as TrendDelta } from "./TrendDelta";
 export { default as FertilizerCard } from "./FertilizerCard";
 export { default as CropKnowledgeCard } from "./CropKnowledgeCard";
+export { default as DeploymentNoticeModal } from "./DeploymentNoticeModal";
 export type { SearchResult, SearchResponse } from "./RankedTable";
 export type { WeatherCondition } from "./WeatherScene";
 export type { NewsItem } from "./NewsCard";
