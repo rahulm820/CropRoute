@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="760" viewBox="0 0 1040 760" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6B7261"/>
+    </marker>
+    <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2E7D4F"/>
+    </marker>
+  </defs>
+
+  <rect width="1040" height="760" fill="#FBFAF6"/>
+  <text x="36" y="44" font-size="22" font-weight="700" fill="#1B1F17">CropRoute — system architecture</text>
+  <text x="36" y="66" font-size="12.5" fill="#6B7261">wholesale food price &amp; sourcing intelligence · self-healing Bright Data collection</text>
+
+  <!-- ================= client + frontend ================= -->
+  <rect x="40" y="92" width="170" height="58" rx="10" fill="#FFFFFF" stroke="#E4E1D6"/>
+  <text x="125" y="116" text-anchor="middle" font-size="14" font-weight="600" fill="#1B1F17">Browser</text>
+  <text x="125" y="134" text-anchor="middle" font-size="11" fill="#6B7261">judges / traders</text>
+
+  <line x1="210" y1="121" x2="258" y2="121" stroke="#6B7261" stroke-width="1.6" marker-end="url(#arr)" marker-start="url(#arr)"/>
+
+  <rect x="262" y="88" width="330" height="96" rx="10" fill="#FFFFFF" stroke="#E4E1D6"/>
+  <text x="282" y="112" font-size="14.5" font-weight="700" fill="#2E7D4F">frontend/ · Next.js 14 (app router) · :3000</text>
+  <text x="282" y="132" font-size="11.5" fill="#1B1F17">server components fetch server-side via SERVER_API_URL</text>
+  <text x="282" y="148" font-size="11.5" fill="#1B1F17">client components call NEXT_PUBLIC_API_URL (lib/api.ts)</text>
+  <text x="282" y="168" font-size="11" fill="#6B7261">routes: / results/[item] state/[id] mandi/[id] collectors farmer feed</text>
+
+  <!-- frontend -> backend -->
+  <line x1="427" y1="184" x2="427" y2="222" stroke="#2E7D4F" stroke-width="1.8" marker-end="url(#arrb)"/>
+  <text x="438" y="207" font-size="11" fill="#2E7D4F">REST /api/* JSON</text>
+
+  <!-- ================= backend ================= -->
+  <rect x="40" y="226" width="520" height="298" rx="12" fill="#FFFFFF" stroke="#2E7D4F" stroke-width="1.6"/>
+  <rect x="40" y="226" width="520" height="34" rx="12" fill="#E4F1E8"/>
+  <text x="60" y="248" font-size="15" font-weight="700" fill="#1F5C39">backend/ · FastAPI · :8000</text>
+
+  <!-- router chips -->
+  <g font-size="11" fill="#1F5C39">
+    <rect x="60" y="272" width="64" height="22" rx="11" fill="#FBFAF6" stroke="#E4E1D6"/><text x="92" y="287" text-anchor="middle">search</text>
+    <rect x="130" y="272" width="56" height="22" rx="11" fill="#FBFAF6" stroke="#E4E1D6"/><text x="158" y="287" text-anchor="middle">state</text>
+    <rect x="192" y="272" width="58" height="22" rx="11" fill="#FBFAF6" stroke="#E4E1D6"/><text x="221" y="287" text-anchor="middle">mandi</text>
+    <rect x="256" y="272" width="80" height="22" rx="11" fill="#FBFAF6" stroke="#E4E1D6"/><text x="296" y="287" text-anchor="middle">collectors</text>
+    <rect x="342" y="272" width="106" height="22" rx="11" fill="#FBFAF6" stroke="#E4E1D6"/><text x="395" y="287" text-anchor="middle">auth·posts·feed</text>
+    <rect x="454" y="272" width="86" height="22" rx="11" fill="#FBFAF6" stroke="#E4E1D6"/><text x="497" y="287" text-anchor="middle">weather</text>
+  </g>
+
+  <!-- services -->
+  <g font-size="11.5" fill="#1B1F17">
+    <rect x="60" y="308" width="230" height="52" rx="8" fill="#FBFAF6" stroke="#E4E1D6"/>
+    <text x="74" y="328" font-weight="600">brightdata_service</text>
+    <text x="74" y="345" fill="#6B7261">POST /dca/trigger → poll /dca/dataset</text>
+
+    <rect x="302" y="308" width="238" height="52" rx="8" fill="#FBFAF6" stroke="#E4E1D6"/>
+    <text x="316" y="328" font-weight="600">self_heal_monitor</text>
+    <text x="316" y="345" fill="#6B7261">hourly cycle · baseline vs completeness</text>
+
+    <rect x="60" y="370" width="230" height="52" rx="8" fill="#FBFAF6" stroke="#E4E1D6"/>
+    <text x="74" y="390" font-weight="600">ingest_service</text>
+    <text x="74" y="407" fill="#6B7261">rows → news / fertilizer_prices tables</text>
+
+    <rect x="302" y="370" width="238" height="52" rx="8" fill="#FBFAF6" stroke="#E4E1D6"/>
+    <text x="316" y="390" font-weight="600">enrichment_service</text>
+    <text x="316" y="407" fill="#6B7261">lazy dealer scrape on mandi view</text>
+
+    <rect x="60" y="432" width="230" height="52" rx="8" fill="#FBFAF6" stroke="#E4E1D6"/>
+    <text x="74" y="452" font-weight="600">weather_service</text>
+    <text x="74" y="469" fill="#6B7261">Open-Meteo forecast + provenance</text>
+
+    <rect x="302" y="432" width="238" height="52" rx="8" fill="#FBFAF6" stroke="#E4E1D6"/>
+    <text x="316" y="452" font-weight="600">search_cache · refresh_job</text>
+    <text x="316" y="469" fill="#6B7261">Redis result cache · scheduled refresh</text>
+  </g>
+
+  <!-- backend -> postgres -->
+  <line x1="560" y1="300" x2="612" y2="300" stroke="#6B7261" stroke-width="1.6" marker-end="url(#arr)"/>
+  <text x="566" y="290" font-size="10.5" fill="#6B7261">SQLAlchemy</text>
+  <!-- backend -> redis -->
+  <line x1="560" y1="458" x2="612" y2="458" stroke="#6B7261" stroke-width="1.6" marker-end="url(#arr)" marker-start="url(#arr)"/>
+
+  <!-- brightdata -> cloud -->
+  <line x1="275" y1="360" x2="275" y2="556" stroke="#6B7261" stroke-width="0"/>
+  <path d="M175 360 C 175 420, 240 430, 240 480 L 240 548" fill="none" stroke="#2E7D4F" stroke-width="1.8" marker-end="url(#arrb)"/>
+  <text x="186" y="472" font-size="10.5" fill="#2E7D4F" transform="rotate(-83 186 472)">trigger · poll snapshot</text>
+
+  <!-- ================= datastores ================= -->
+  <rect x="618" y="238" width="180" height="196" rx="10" fill="#FFFFFF" stroke="#E4E1D6"/>
+  <text x="708" y="260" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1B1F17">PostgreSQL :5432</text>
+  <g font-size="11" fill="#1B1F17">
+    <text x="636" y="284">states · mandis · prices</text>
+    <text x="636" y="302">dealers · news</text>
+    <text x="636" y="320">fertilizer_prices</text>
+    <text x="636" y="338">crop_knowledge</text>
+    <text x="636" y="356">users · posts</text>
+    <text x="636" y="374">collector_runs</text>
+  </g>
+  <text x="636" y="404" font-size="10.5" fill="#6B7261">every scraped row keeps</text>
+  <text x="636" y="418" font-size="10.5" fill="#6B7261">source_url + scraped_at</text>
+
+  <rect x="818" y="400" width="182" height="118" rx="10" fill="#FFFFFF" stroke="#E4E1D6"/>
+  <text x="909" y="422" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1B1F17">Redis :6379</text>
+  <g font-size="11" fill="#1B1F17">
+    <text x="834" y="446">search:v1 results cache</text>
+    <text x="834" y="464">weather:v1 cache</text>
+    <text x="834" y="482">selfheal baselines</text>
+    <text x="834" y="500">breach strike counters</text>
+  </g>
+
+  <!-- ================= brightdata cloud ================= -->
+  <rect x="40" y="556" width="500" height="76" rx="10" fill="#FFFFFF" stroke="#E4E1D6"/>
+  <text x="60" y="580" font-size="13.5" font-weight="700" fill="#1B1F17">scrapers/*.json — collector registry</text>
+  <text x="60" y="600" font-size="11" fill="#6B7261">name · collector_id (c_xxx) · target_url · required_fields · kind · cadence</text>
+  <text x="60" y="618" font-size="11" fill="#6B7261">one JSON per source; placeholder c_TBD ids fail fast until provisioned</text>
+
+  <line x1="540" y1="594" x2="618" y2="594" stroke="#6B7261" stroke-width="1.6" marker-end="url(#arr)" marker-start="url(#arr)"/>
+
+  <rect x="618" y="556" width="382" height="120" rx="10" fill="#191C18"/>
+  <text x="638" y="582" font-size="13.5" font-weight="700" fill="#4BA372">Bright Data Scraper Studio · cloud</text>
+  <g font-size="11" fill="#F2F1EA">
+    <text x="638" y="604">punjab_agri_news_tribune · punjab_indiamart_dealers</text>
+    <text x="638" y="620">punjab_fertilizer_prices · gujarat news · price feeds …</text>
+  </g>
+  <text x="638" y="646" font-size="10.5" fill="#A3AB98">self-heal: re-derive extraction from plain-english description</text>
+
+  <line x1="809" y1="556" x2="809" y2="522" stroke="#2E7D4F" stroke-width="1.8" marker-end="url(#arrb)"/>
+  <text x="818" y="543" font-size="10.5" fill="#2E7D4F">rows land via ingest</text>
+
+  <!-- targets -->
+  <rect x="618" y="692" width="382" height="52" rx="10" fill="#FFFFFF" stroke="#E4E1D6"/>
+  <text x="638" y="714" font-size="12" font-weight="600" fill="#1B1F17">target publishers &amp; marketplaces</text>
+  <text x="638" y="732" font-size="10.5" fill="#6B7261">tribuneindia · indiamart · bighaat · fertilizerindia · mandi sites …</text>
+  <line x1="809" y1="692" x2="809" y2="676" stroke="#6B7261" stroke-width="1.6" marker-end="url(#arr)" marker-start="url(#arr)"/>
+
+  <!-- open-meteo -->
+  <rect x="40" y="668" width="220" height="56" rx="10" fill="#FFFFFF" stroke="#E4E1D6"/>
+  <text x="150" y="690" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1B1F17">Open-Meteo API</text>
+  <text x="150" y="708" text-anchor="middle" font-size="10.5" fill="#6B7261">external weather, no key needed</text>
+  <line x1="150" y1="668" x2="150" y2="652" stroke="#6B7261" stroke-width="0"/>
+  <line x1="175" y1="668" x2="175" y2="484" stroke="#6B7261" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arr)"/>
+
+  <!-- legend -->
+  <g font-size="10.5" fill="#6B7261">
+    <line x1="300" y1="700" x2="340" y2="700" stroke="#6B7261" stroke-width="1.6"/><text x="348" y="704">sync call</text>
+    <line x1="420" y1="700" x2="460" y2="700" stroke="#2E7D4F" stroke-width="1.8"/><text x="468" y="704">scrape flow</text>
+    <line x1="560" y1="700" x2="600" y2="700" stroke="#6B7261" stroke-width="1.6" stroke-dasharray="4 4"/><text x="608" y="704">external API</text>
+  </g>
+</svg>
