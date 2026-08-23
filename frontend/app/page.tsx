@@ -683,7 +683,7 @@ function Attribution() {
 /* Demo — YouTube walkthrough                                          */
 /* ------------------------------------------------------------------ */
 
-const YOUTUBE_ID = "dQw4w9WgXcQ";
+const YOUTUBE_ID = "nYrOI-zp840";
 const YOUTUBE_TITLE = "CropRoute product walkthrough";
 
 const DEMO_CHAPTERS = [

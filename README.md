@@ -21,6 +21,11 @@
 </p>
 
 ---
+
+## 🎬 Watch the demo (3 min)
+
+[![CropRoute demo video](https://img.youtube.com/vi/nYrOI-zp840/hqdefault.jpg)](https://youtu.be/nYrOI-zp840)
+
 ![](docs/Readme%20imgs/image.png)
 | | |
 |---|---|
