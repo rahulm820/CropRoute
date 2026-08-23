@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * Modify this constant or pass `videoUrl` prop to update.
  */
 export const DEFAULT_DEMO_VIDEO_URL =
-  "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  "https://youtu.be/nYrOI-zp840";
 
 interface DeploymentNoticeModalProps {
   /** Optional video URL to override default demo tour video. */
