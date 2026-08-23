@@ -38,7 +38,7 @@ export const MOCK_FERTILIZER_PUNJAB: FertilizerPrice[] = [
     price: 266,
     unit: "45kg bag",
     delta_pct: 0.0,
-    source_url: "https://farmer.gov.in/FarmerHome.aspx",
+    source_url: "https://kisanretailmart.com/up/prices",
     scraped_at: ago(45),
   },
   {
@@ -46,7 +46,7 @@ export const MOCK_FERTILIZER_PUNJAB: FertilizerPrice[] = [
     price: 1350,
     unit: "50kg bag",
     delta_pct: 4.2,
-    source_url: "https://farmer.gov.in/FarmerHome.aspx",
+    source_url: "https://kisanretailmart.com/up/prices",
     scraped_at: ago(45),
   },
   {
@@ -54,7 +54,7 @@ export const MOCK_FERTILIZER_PUNJAB: FertilizerPrice[] = [
     price: 1700,
     unit: "50kg bag",
     delta_pct: null, // pack-size change invalidated prior comparison
-    source_url: "https://farmer.gov.in/FarmerHome.aspx",
+    source_url: "https://kisanretailmart.com/up/prices",
     scraped_at: ago(45),
   },
 ];
@@ -69,7 +69,7 @@ export const MOCK_FERTILIZER_MAHARASHTRA: FertilizerPrice[] = [
     price: 270,
     unit: "45kg bag",
     delta_pct: 1.5,
-    source_url: "https://farmer.gov.in/FarmerHome.aspx",
+    source_url: "https://kisanretailmart.com/up/prices",
     scraped_at: ago(120),
   },
   {
@@ -77,7 +77,7 @@ export const MOCK_FERTILIZER_MAHARASHTRA: FertilizerPrice[] = [
     price: 1340,
     unit: "50kg bag",
     delta_pct: -2.8,
-    source_url: "https://farmer.gov.in/FarmerHome.aspx",
+    source_url: "https://kisanretailmart.com/up/prices",
     scraped_at: ago(120),
   },
   {
@@ -85,7 +85,7 @@ export const MOCK_FERTILIZER_MAHARASHTRA: FertilizerPrice[] = [
     price: 1680,
     unit: "50kg bag",
     delta_pct: 0.0,
-    source_url: "https://farmer.gov.in/FarmerHome.aspx",
+    source_url: "https://kisanretailmart.com/up/prices",
     scraped_at: ago(120),
   },
 ];

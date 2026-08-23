@@ -1,0 +1,9 @@
+{
+  "name": "punjab_fertilizer_prices",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://farmer.in/fertilizers/",
+  "description": "Extract fertilizer name (Urea, DAP, MOP, NPK, SSP, Zinc Sulphate etc.), Hindi name, standard dose, price (INR per unit/bag), and whether MRP is government-fixed from the fertilizer price table on Farmer.in. Store the price per-kg calculated price for each product.",
+  "required_fields": ["fertilizer_name", "price"],
+  "kind": "fertilizer",
+  "cadence": "weekly"
+}

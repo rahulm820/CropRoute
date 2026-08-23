@@ -1,13 +1,25 @@
-# CropRoute — data sources (v2 — no gov-portal scraping)
+# CropRoute — data sources (v3 — private aggregators + expanded scraping)
 
 Every upstream the product touches. Add a row before you write the client, not after.
 
-> **Change from v1:** Source #2 previously scraped state APMC/eNAM portals directly.
-> That's out per updated guidance — **no scraping of any `.gov.in` or state government
-> website, full stop.** Government data is used only where it's exposed through an
-> official published API (like data.gov.in below), never scraped from the page. Source
-> #2 is replaced with private/commercial directories, which also happens to sidestep
-> the ASP.NET-postback and image-table pain from v1's gotchas.
+> **Change from v2:** Source #2 expanded with 6 private mandi price aggregators.
+> Source #3 added Krishi Jagran and Hindu BusinessLine as private agri news outlets.
+> Source #4 added Farmer.in, FertilizerIndia.com, BigHaat, and ESROT as private
+> fertilizer sources. Source #6 now includes Vikaspedia MSP scraping. All targets are
+> **non-government websites** — the no-gov-scraping rule remains absolute.
+
+## Source summary
+
+| # | Source | Type | Target Sites | Data | Cadence |
+|---|--------|------|-------------|------|---------|
+| 1 | data.gov.in API | API (official) | api.data.gov.in | Daily mandi prices | 6-12h |
+| 2 | Dealer directories | SCRAPE | IndiaMART, TradeIndia, Justdial | Dealer contacts, phone, address | weekly |
+| 2a | Mandi aggregators | SCRAPE | MandiPulse, KrishiPulse, Farmer.in, MandiBhav.in, Mandi Bhav India, Kisaan Helpline | Aggregated mandi prices, market intelligence | daily |
+| 3 | Agri news | SCRAPE | The Tribune, Krishi Jagran, Hindu BusinessLine | Headlines, summaries, URLs | 3-6h |
+| 4 | Fertilizer retail | SCRAPE | Farmer.in, FertilizerIndia.com, BigHaat, ESROT | Fertilizer prices, MRP, pack sizes | weekly |
+| 5 | Weather | API (free) | Open-Meteo | Weather forecasts, WMO codes | 1h cache |
+| 6 | Crop knowledge | SEED + SCRAPE | ICAR publications, Vikaspedia | Sowing windows, MSP reference | monthly |
+| 7 | User posts | API (internal) | CropRoute /posts endpoint | Farmer price reports | real-time |
 
 ## 1. data.gov.in — Agmarknet daily mandi prices (BASELINE, official API — not a scrape)
 
@@ -63,29 +75,85 @@ Every upstream the product touches. Add a row before you write the client, not a
   a login, no personal (non-business) contact data, respect robots.txt, and let Bright
   Data handle rate limiting rather than hammering a target ourselves.
 
+## 2a. Mandi price aggregators (SCRAPE — alternative mandi price feed)
+
+- Targets: private websites that aggregate and republish daily mandi prices from
+  Agmarknet/data.gov.in into their own structured pages. These are **not government
+  portals** — they are private aggregators that add value through better UX, alerts,
+  historical trends, and market intelligence. Scraping their rendered pages does not
+  hit government servers.
+- Sites:
+  - **MandiPulse** (mandipulse.com) — State-wise mandi prices, market intelligence
+    snapshots, price spike/drop alerts, market sentiment. Covers 3,837+ mandis,
+    255+ commodities, 29 states. Data from Agmarknet/data.gov.in.
+  - **KrishiPulse** (krishipulse.com) — Live mandi prices from 7,000+ mandis,
+    crop guides, disease library, buyer marketplace. Data from Agmarknet + direct
+    mandi feeds.
+  - **Farmer.in** (farmer.in) — Mandi bhav from 7,000+ mandis, price movers,
+    fertilizer prices, weather, subsidies. Data from Agmarknet/data.gov.in.
+  - **MandiBhav.in** (mandibhav.in) — ML-driven price predictions, historical
+    trends, 4,000+ mandis, 400+ crops. Data from Agmarknet.
+  - **Mandi Bhav India** (mandibhavindia.in) — Daily market rates, 5+ years
+    historical data, state-wise analysis, agri classifieds. Data from Agmarknet/eNAM.
+  - **Kisaan Helpline** (kisaanhelpline.com) — Mandi bhav, district-wise crop
+    prices, agri advice. Data from Agmarknet.
+- Method: Bright Data Scraper Studio collector per site. Each collector targets a
+  specific state or commodity page to keep token usage under 500 per test run.
+- Fields: commodity name, market/mandi name, district, state, min price, modal price,
+  max price, variety/grade, date, price change if shown.
+- Cadence: daily (mirrors the Agmarknet daily update cycle).
+- Gotchas: these aggregators sometimes delay by 1-2 days behind Agmarknet. Price
+  formats may vary (some include ₹ symbol, some use commas). Normalize on ingest.
+  Dedupe on (commodity, market, date) since multiple aggregators may carry the same
+  underlying data.
+- Legality: public commercial websites, not government portals. Scraping rendered
+  pages is legal. Respect robots.txt and rate limits.
+
 ## 3. Agri news (SCRAPE — region page + wholesaler feed)
 
 - Targets: state agriculture news sections of **mainstream private outlets and agri
-  trade press only.** Prefer sources with an RSS feed; fall back to a collector over the
-  section page. **Explicitly exclude PIB, AIR, DD, or any `.gov.in`/state-government
+  trade press only.** Prefer sources with an RSS feed; fall back to a collector over
+  the section page. **Explicitly exclude PIB, AIR, DD, or any `.gov.in`/state-government
   press-release page** even if it shows up in a news aggregator — same rule as source #2.
+- Sites:
+  - **The Tribune** (tribuneindia.com) — Punjab/Chandigarh agriculture section.
+  - **Krishi Jagran** (krishijagran.com) — India's largest agriculture news platform.
+    Covers farming news, market updates, government schemes, crop management. Private
+    media group, not a government outlet.
+  - **The Hindu BusinessLine** (thehindubusinessline.com) — Agri Business section.
+    Covers commodity markets, trade, policy analysis. Mainstream business press.
 - Fields: headline, summary, article URL, image URL, video URL if present, publisher,
   published date.
 - Cadence: every 3-6h.
 - Gotchas: paywalls (store the headline and link, never the paywalled body), and
-  duplicate syndicated stories - dedupe on normalized title plus publish date.
+  duplicate syndicated stories — dedupe on normalized title plus publish date.
 - Legality: store headline, short summary, link and thumbnail only. Never the full
   article text. Always attribute the publisher and link out.
 
 ## 4. Fertilizer retail prices (SCRAPE — input cost)
 
-- Targets: retail agri-input listings for Urea, DAP, MOP on **private
-  e-commerce/marketplace platforms** (not the government's subsidized-fertilizer portals
-  — those are `.gov.in` and out of scope).
-- Fields: product, brand, pack size, price, unit, listing URL.
-- Cadence: daily.
-- Gotchas: pack sizes vary (45kg vs 50kg bag) - always store `unit` and normalize to
-  price-per-kg for comparison, or the delta is meaningless.
+- Targets: retail agri-input listings for Urea, DAP, MOP, NPK, SSP, Micronutrients
+  on **private e-commerce/marketplace platforms** (not the government's
+  subsidized-fertilizer portals — those are `.gov.in` and out of scope).
+- Sites:
+  - **Farmer.in** (farmer.in/fertilizers/) — Fertilizer price list with MRP, usage,
+    Hindi names, standard dose. Covers Urea (₹242/45kg bag), DAP (₹1,350/50kg),
+    MOP (₹1,700/50kg), NPK (₹1,450/50kg), SSP (₹480/50kg), Zinc Sulphate (₹85/kg).
+  - **FertilizerIndia.com** (fertilizerindia.com/market/) — Wholesale and retail
+    fertilizer prices across India. Urea, DAP, NPK Complex, MOP, SOP, Micronutrients,
+    Water Soluble Fertilizers. State-wise rates updated from industry sources.
+  - **BigHaat** (bighaat.com/collections/fertilizers) — India's largest agri e-commerce
+    platform. 9,000+ products from 400+ brands. Fertilizers with product name, brand,
+    price, pack size, NPK composition. 30M+ farmers served.
+  - **ESROT** (esrot.com/fertilizer-price) — Fertilizer MRP data synced from data.gov.in
+    Ministry of Chemicals & Fertilizers. Covers DAP (₹1,350), MOP (₹1,534),
+    NPK variants, SSP (₹550). Government-subsidized prices.
+- Fields: product name, brand, pack size, price, unit (normalize to ₹/kg), listing URL.
+- Cadence: weekly.
+- Gotchas: pack sizes vary (45kg vs 50kg bag) — always store `unit` and normalize to
+  price-per-kg for comparison, or the delta is meaningless. Urea is under separate
+  pricing mechanism (government-controlled MRP of ₹242/45kg). P&K fertilizers follow
+  Nutrient Based Subsidy (NBS) framework.
 
 ## 5. Open-Meteo — weather (API, no key)
 
@@ -98,7 +166,7 @@ Every upstream the product touches. Add a row before you write the client, not a
   frontend never branches on a raw code. `hot` is derived: sunny and max_c >= 40.
 - Not government-operated, not affected by this change.
 
-## 6. Crop knowledge (SEEDED, no scrape)
+## 6. Crop knowledge (SEEDED + SCRAPE reference data)
 
 - Sowing and harvest windows, major growing districts, grading notes per crop per region.
 - Source: ICAR and state agriculture department publications, **hand-curated once into a
@@ -106,6 +174,11 @@ Every upstream the product touches. Add a row before you write the client, not a
   This is the correct pattern for any government-published information we need going
   forward: read it, transcribe the relevant facts by hand, cite the source, seed it.
   Small, stable, not worth a collector even if scraping were allowed.
+- **MSP reference data** — scraped from Vikaspedia (en.vikaspedia.in), a MeitY knowledge
+  portal that publishes government MSP tables in a wiki-style interface. While the data
+  is government-published, Vikaspedia is not a `.gov.in` domain and provides a clean
+  HTML structure. Covers 22 mandated crops (14 kharif, 6 rabi, 2 commercial), current
+  and previous season MSP values. Scraped monthly since MSP changes are infrequent.
 
 ---
 

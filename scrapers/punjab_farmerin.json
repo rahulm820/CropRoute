@@ -1,0 +1,8 @@
+{
+  "name": "punjab_farmerin",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://farmer.in/mandi-bhav/state/punjab/",
+  "description": "Extract commodity name, modal price, min price, max price, and price change from the Punjab mandi bhav listing on Farmer.in. Capture the commodity Hindi name if shown alongside. Extract the date if displayed on the page.",
+  "required_fields": ["commodity_name", "modal_price"],
+  "cadence": "daily"
+}

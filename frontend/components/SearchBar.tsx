@@ -77,7 +77,7 @@ export default function SearchBar() {
       if (!trimmed) return;
       setOpen(false);
       setQuery(trimmed);
-      router.push(`/app/results/${encodeURIComponent(trimmed)}`);
+      router.push(`/results/${encodeURIComponent(trimmed)}`);
     },
     [router],
   );

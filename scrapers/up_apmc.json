@@ -1,0 +1,8 @@
+{
+  "name": "up_apmc",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://www.indiamart.com/search.mp?ss=grain+trader+commission+agent&prdsrc=1&res=RC4&loc=Uttar+Pradesh",
+  "description": "Extract business name, phone number, full address, commodities dealt in, and listing URL from each grain trader / commission agent / arhtiya listing in Uttar Pradesh on IndiaMART. Include the dealer's role (commission agent, wholesaler, licensed dealer) if stated. Skip promoted/sponsored listings that obscure the organic business details.",
+  "required_fields": ["mandi_name", "office_phone"],
+  "cadence": "weekly"
+}

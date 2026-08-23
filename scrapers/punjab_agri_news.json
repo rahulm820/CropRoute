@@ -1,0 +1,9 @@
+{
+  "name": "punjab_agri_news",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://www.tribuneindia.com/news/agriculture",
+  "description": "Extract headline, short summary (first 2-3 sentences if available), article URL, image URL, video URL if the article embeds a video player, publisher name, and published date from each agriculture news story on the page. Keep the article URL as-is; do not follow or store the full article body. If a video URL is present in an embed or og:video meta tag, capture it; otherwise leave null.",
+  "required_fields": ["headline"],
+  "kind": "news",
+  "cadence": "3-6h"
+}

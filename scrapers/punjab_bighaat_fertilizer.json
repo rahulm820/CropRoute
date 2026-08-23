@@ -1,0 +1,9 @@
+{
+  "name": "punjab_bighaat_fertilizer",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://www.bighaat.com/collections/fertilizers",
+  "description": "Extract product name, brand, price (INR), pack size (kg), nutrient composition (NPK if stated), and product URL from BigHaat's fertilizer collection page. Capture whether the product is organic or chemical. Store the effective price per kg.",
+  "required_fields": ["product_name", "price", "pack_size"],
+  "kind": "fertilizer",
+  "cadence": "weekly"
+}

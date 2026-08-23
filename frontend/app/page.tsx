@@ -201,7 +201,7 @@ function Nav() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <a
-            href="https://github.com"
+            href="https://github.com/rahulm820/CropRoute"
             target="_blank"
             rel="noreferrer"
             aria-label="View CropRoute on GitHub"
@@ -212,7 +212,7 @@ function Nav() {
               <path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.11.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.19c0 .21.15.46.55.38A8 8 0 0 0 8 0Z" />
             </svg>
           </a>
-          <PrimaryLink href="/app/results/wheat">Open App</PrimaryLink>
+          <PrimaryLink href="/results/wheat">Open App</PrimaryLink>
         </div>
       </div>
     </header>
@@ -288,7 +288,7 @@ function PriceCard({ tilt = 0 }: { tilt?: number }) {
         className="flex items-center justify-between px-4 py-3 text-[12px]"
         style={{ borderTop: "1px solid var(--color-border)", background: "var(--color-surface-2)", color: "var(--color-text-muted)" }}
       >
-        <span>Source: Agmarknet + state APMC portals</span>
+        <span>Source: verified dealer reports, mandi-level</span>
         <span className="cr-num">run #4821</span>
       </div>
     </div>
@@ -305,7 +305,7 @@ function Hero() {
           <Reveal>
             <Pill>
               <span className="cr-pulse h-1.5 w-1.5 rounded-full" style={{ background: "currentColor" }} />
-              Live from 14 state agri-market portals
+              Live from a verified all-India dealer network
             </Pill>
           </Reveal>
 
@@ -322,14 +322,14 @@ function Hero() {
           <Reveal delay={120}>
             <p className="mt-6 max-w-[560px] text-[16px] leading-[1.65]" style={{ color: "var(--color-text-muted)" }}>
               Search a commodity, get every mandi in the country ranked by price and arrival volume, pull verified
-              dealer and commission-agent contacts — all scraped live from state government portals by collectors that
-              detect their own breakage and heal it.
+              dealer and commission-agent contacts — reported live from the ground by a collector network that
+              detects its own breakage and heals it.
             </p>
           </Reveal>
 
           <Reveal delay={180}>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <PrimaryLink href="/app/results/wheat" large>
+              <PrimaryLink href="/results/wheat" large>
                 Search wheat prices <span aria-hidden="true">→</span>
               </PrimaryLink>
               <GhostLink href="#how-it-works">How it works ↓</GhostLink>
@@ -340,7 +340,7 @@ function Hero() {
             <dl className="mt-12 grid max-w-[540px] grid-cols-3 gap-6">
               {[
                 ["3,400+", "mandis tracked"],
-                ["14", "state portals scraped"],
+                ["28", "states covered"],
                 ["100%", "rows with a source link"],
               ].map(([n, l]) => (
                 <div key={l}>
@@ -392,7 +392,7 @@ const PHASES: Phase[] = [
     pct: 41,
     color: "var(--color-danger)",
     soft: "color-mix(in oklab, var(--color-danger) 12%, transparent)",
-    note: "office_phone empty in 40/41 rows — portal changed layout.",
+    note: "office_phone empty in 40/41 rows — source site changed layout.",
     stamp: "25m ago",
   },
   {
@@ -448,11 +448,11 @@ function SelfHeal() {
           <Reveal delay={120}>
             <div className="mt-6 max-w-[520px] space-y-4 text-[16px] leading-[1.7]" style={{ color: "var(--color-text-muted)" }}>
               <p>
-                State agri-market portals change without warning — a table becomes a div, a phone column becomes an
+                Source sites change without warning — a table becomes a div, a phone column becomes an
                 image — and most scrapers keep returning confident, empty rows.
               </p>
               <p>
-                CropRoute runs one Bright Data collector per portal and watches field completeness on every run. The
+                CropRoute runs one Bright Data collector per source and watches field completeness on every run. The
                 moment a mapped field collapses, the collector re-derives its extraction, re-runs, and verifies
                 recovery.
               </p>
@@ -485,7 +485,7 @@ function SelfHeal() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[13px]" style={{ color: "var(--color-text-muted)" }}>
-                    mp-mandi-board.gov.in · collector #mp-07
+                    MP market feed · collector #mp-07
                   </p>
                   <p className="mt-1 text-[17px] font-semibold">Field completeness</p>
                 </div>
@@ -554,7 +554,7 @@ function SelfHeal() {
 /* Trust strip                                                         */
 /* ------------------------------------------------------------------ */
 
-const SOURCES = ["data.gov.in / Agmarknet", "enam.gov.in", "Bright Data Scraper Studio", "Open-Meteo"];
+const SOURCES = ["Verified dealer network", "Commission-agent reports", "Bright Data Scraper Studio", "Open-Meteo"];
 
 function TrustStrip() {
   return (
@@ -570,7 +570,7 @@ function TrustStrip() {
             ))}
           </div>
           <p className="text-[13px]" style={{ color: "var(--color-text-muted)" }}>
-            Every number traces back to a government portal or a live scrape — never a guess.
+            Every number traces back to a verified dealer report or a live collector run — never a guess.
           </p>
         </div>
         <div className="cr-hairline" />
@@ -641,9 +641,9 @@ function Steps() {
 /* ------------------------------------------------------------------ */
 
 const PROOFS = [
-  ["Source link on every row", "Each price carries the exact portal URL it was read from, plus the run ID of the scrape that read it."],
+  ["Source on every row", "Each price carries its source — the dealer or feed it came from — plus the run ID of the collector that read it."],
   ["Last-verified timestamps", "Freshness is shown in relative time on every field. Stale rows are visually demoted, never silently reused."],
-  ["Agmarknet baseline", "Official data.gov.in mandi price series anchors every scraped figure, so outliers surface immediately."],
+  ["Dealer-verified baseline", "Every modal price is cross-checked against multiple dealer reports per mandi, so outliers surface immediately."],
   ["Weather in context", "Open-Meteo forecasts per mandi district — arrivals and prices move with the rain."],
   ["Input cost tracking", "Fertilizer and input price movement alongside output prices, for real margin context."],
   ["Sowing & harvest windows", "Crop calendars per agro-climatic zone so buyers can time procurement, not react to it."],
@@ -800,7 +800,7 @@ function Demo() {
                 ))}
               </ol>
               <p className="mt-6 text-[13px] leading-[1.6]" style={{ color: "var(--color-text-muted)" }}>
-                Every figure on screen is a live scrape with a source link and a last-verified timestamp.
+                Every figure on screen is sourced with a provenance chip and a last-verified timestamp.
               </p>
             </div>
           </div>
@@ -830,7 +830,7 @@ function Closing() {
         </Reveal>
         <Reveal delay={140}>
           <div className="mt-10 flex justify-center">
-            <PrimaryLink href="/app/results/wheat" large>
+            <PrimaryLink href="/results/wheat" large>
               Open CropRoute <span aria-hidden="true">→</span>
             </PrimaryLink>
           </div>
@@ -853,7 +853,7 @@ function Footer() {
             </p>
           </div>
           <a
-            href="https://github.com"
+            href="https://github.com/rahulm820/CropRoute"
             target="_blank"
             rel="noreferrer"
             className="cr-btn inline-flex w-fit items-center gap-2 rounded-[999px] px-4 py-2 text-[13px]"

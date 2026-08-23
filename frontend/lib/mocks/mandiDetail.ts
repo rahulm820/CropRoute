@@ -82,7 +82,7 @@ export const MOCK_MANDI_DETAIL_412: MandiDetailResponse = {
     address:
       "Office of the Market Committee, Grain Market, Khanna, Ludhiana, Punjab 141401",
     phone: "+91-1628-224567",
-    source_url: "https://enam.gov.in/web/mandi/khanna-grain-market",
+    source_url: "https://punjabmandinetwork.com/khanna",
     scraped_at: ago(180), // ~3 hours ago — fresh
   },
   dealers: [
@@ -90,27 +90,27 @@ export const MOCK_MANDI_DETAIL_412: MandiDetailResponse = {
       name: "Harpreet Singh & Sons",
       role: "commission agent",
       phone: "+91-98765-43210",
-      source_url: "https://enam.gov.in/web/mandi/khanna-grain-market/dealers",
+      source_url: "https://punjabmandinetwork.com/khanna/dealers",
       scraped_at: ago(180), // ~3 hours ago — fresh
     },
     {
       name: "Gupta Trading Co.",
       role: "commission agent",
       phone: "+91-98765-12345",
-      source_url: "https://enam.gov.in/web/mandi/khanna-grain-market/dealers",
+      source_url: "https://punjabmandinetwork.com/khanna/dealers",
       scraped_at: ago(360), // ~6 hours ago — still fresh
     },
     {
       name: "Rajinder Agri Services",
       role: "licensed dealer",
       phone: "+91-94170-67890",
-      source_url: "https://enam.gov.in/web/mandi/khanna-grain-market/dealers",
+      source_url: "https://punjabmandinetwork.com/khanna/dealers",
       scraped_at: ago(60 * 24 * 12), // ~12 days ago — stale
     },
   ],
   enrichment: {
     status: "fresh",
-    collector: "punjab_apmc",
+    collector: "punjab_mandi_network",
   },
 };
 
@@ -141,13 +141,13 @@ export const MOCK_MANDI_DETAIL_815: MandiDetailResponse = {
     address:
       "Krishi Upaj Mandi Samiti, Karond Bypass Rd, Bhopal, Madhya Pradesh 462038",
     phone: "+91-755-2660123",
-    source_url: "https://mpmandiboard.gov.in/mandi/bhopal",
+    source_url: "https://mpagrifacts.com/mandi/bhopal",
     scraped_at: ago(60 * 24 * 2), // ~2 days ago — dated
   },
   dealers: [], // image-based contact table, no extractable phones
   enrichment: {
     status: "stale",
-    collector: "mp_apmc",
+    collector: "mp_market_feed",
   },
 };
 

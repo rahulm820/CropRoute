@@ -47,12 +47,26 @@ services:
     working_dir: /app
     command: 'sh -c "[ -f package.json ] || { echo frontend waiting - no package.json yet, see issue 4; sleep infinity; }; npm install && npm run dev"'
     env_file: .env
+    environment:
+      # bind-mounted Windows paths emit no inotify events -> poll for changes
+      # so hot-reload picks up host edits
+      - WATCHPACK_POLLING=true
+      # server components fetch over the compose network, not localhost
+      - SERVER_API_URL=http://backend:8000
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     volumes:
       - ../frontend:/app
+      # node_modules on a Windows bind mount (NTFS via WSL) makes npm install
+      # crawl and randomly die -> keep deps in a Linux-native named volume
+      - frontend_node_modules:/app/node_modules
+      # .next webpack cache on the same NTFS mount goes stale (unreliable mtime/
+      # inotify across WSL) and serves old modules -> keep it Linux-native too
+      - frontend_next_cache:/app/.next
     depends_on:
       - backend
 
 volumes:
   pgdata:
+  frontend_node_modules:
+  frontend_next_cache:

@@ -91,7 +91,11 @@ does not fail the response.
 }
 ```
 Section `status`: `ok | stale | empty | failed`. The UI renders per-section states off
-this field - see UI-DESIGN.md "States".
+this field - see UI-DESIGN.md "States". Sections resolve concurrently; a section whose
+source dies comes back as `{"status": "failed", "data": [], "error": "cause"}` while
+every other section resolves normally. Stale sections still carry full `data` - the
+UI shows a warn chip rather than hiding old numbers. Response is under 800ms warm;
+one section timing out never holds the response open past its own budget.
 
 ### `GET /api/state/:id/weather`
 Open-Meteo at the state centroid, cached 1h.

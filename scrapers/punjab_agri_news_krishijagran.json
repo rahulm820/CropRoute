@@ -1,0 +1,9 @@
+{
+  "name": "punjab_agri_news",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://krishijagran.com/news",
+  "description": "Extract headline, short summary (first 2-3 sentences), article URL, image URL, video URL if an embed is present, publisher name (Krishi Jagran), and published date from the agriculture news listing on Krishi Jagran. Keep article URLs as-is. Filter for stories mentioning Punjab or relevant crops if visible; otherwise extract all visible stories.",
+  "required_fields": ["headline", "url"],
+  "kind": "news",
+  "cadence": "6h"
+}

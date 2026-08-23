@@ -43,6 +43,7 @@ from sqlalchemy import select
 from db.session import SessionLocal
 from models import CollectorRun
 from services import brightdata_service
+from services.ingest_service import ingest_rows
 
 log = logging.getLogger(__name__)
 
@@ -203,11 +204,35 @@ def _heal(collector_name: str) -> bool:
 # ---------------------------------------------------------------------- monitor --
 
 
+def _ingest(db, name: str, cfg: dict, rows: list[dict]) -> int | None:
+    """Persist fetched rows onto domain tables per config kind (issue #18).
+    Ingestion problems must never fail a heal cycle - log and move on."""
+    try:
+        return ingest_rows(db, name, cfg, rows)
+    except Exception as exc:  # noqa: BLE001 - monitoring survives ingest bugs
+        db.rollback()
+        log.warning("collector %s: ingest skipped (%s)", name, exc)
+        return None
+
+
 def run_once(name: str, *, force_break: bool = False, heal: bool = False,
              fetch=None) -> dict:
     """One monitor cycle for one collector. `fetch` injects a row source (tests);
     default runs the real collector via brightdata_service."""
-    cfg = brightdata_service.load_collector(name)
+    try:
+        cfg = brightdata_service.load_collector(name)
+    except brightdata_service.BrightDataError as exc:
+        # unprovisioned collector (placeholder c_TBD id): record an honest failed
+        # run instead of crashing the whole cycle - the panel shows WHY it is red
+        db = SessionLocal()
+        try:
+            _log_run(db, name, None, "failed",
+                     f"collector not provisioned: {exc}", None)
+        finally:
+            db.close()
+        log.warning("collector %s skipped: %s", name, exc)
+        return {"collector": name, "collector_id": name,
+                "status": "failed", "error": str(exc)}
     # collector_runs.collector_id is the registry name (see models.CollectorRun),
     # not Bright Data's c_xxx id - the /collectors panel joins on scrapers/*.json
     # stems, so both the DB rows and the redis keys below key off `name`
@@ -246,6 +271,11 @@ def run_once(name: str, *, force_break: bool = False, heal: bool = False,
                                error="0 rows on two attempts - fetch failure, status held")
                 log.warning("collector %s: 0 rows twice - holding status", name)
                 return summary
+
+        # ---- ingest: real rows land in domain tables before scoring (issue #18)
+        ingested = _ingest(db, collector_id, cfg, rows)
+        if ingested is not None:
+            summary["ingested"] = ingested
 
         scores = _completeness(rows, required)
         agg = _aggregate(scores)
@@ -343,6 +373,8 @@ def run_once(name: str, *, force_break: bool = False, heal: bool = False,
             if not rows2:
                 summary["notes"] += "; heal re-run returned 0 rows, verdict pending"
                 return summary
+
+            _ingest(db, collector_id, cfg, rows2)  # heal re-runs feed tables too
 
             scores2 = _completeness(rows2, required)
             agg2 = _aggregate(scores2)

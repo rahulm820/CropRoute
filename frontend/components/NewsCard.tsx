@@ -185,7 +185,7 @@ function MediaSection({
   // --- Image-only variant ---
   // Note: when video_url is null this is the only path, and no video-sized
   // space is reserved — the media section only renders if we have a valid image.
-  if (imageBroken) {
+  if (imageBroken || !image_url) {
     return (
       <div className="news-card-media">
         <ImagePlaceholder />

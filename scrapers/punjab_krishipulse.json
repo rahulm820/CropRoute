@@ -1,0 +1,8 @@
+{
+  "name": "punjab_krishipulse",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://krishipulse.com/market-prices",
+  "description": "Extract commodity name, market name, state, district, min price (INR/quintal), modal price, max price, and data date from the live mandi prices table on KrishiPulse. Filter for Punjab rows if visible; otherwise extract all rows and tag by state.",
+  "required_fields": ["commodity_name", "modal_price", "market_name"],
+  "cadence": "daily"
+}

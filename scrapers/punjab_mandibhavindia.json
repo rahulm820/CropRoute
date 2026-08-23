@@ -1,0 +1,8 @@
+{
+  "name": "punjab_mandibhavindia",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://mandibhavindia.in/en?state=Punjab",
+  "description": "Extract commodity name, market name, min price, max price, modal price, and date from each mandi row on Mandi Bhav India's Punjab page. Capture variety and grade if present in the table.",
+  "required_fields": ["commodity_name", "modal_price", "market_name"],
+  "cadence": "daily"
+}

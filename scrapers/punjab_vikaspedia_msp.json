@@ -1,0 +1,8 @@
+{
+  "name": "punjab_vikaspedia",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://en.vikaspedia.in/viewcontent/agriculture/market-information/minimum-support-price?lgn=en",
+  "description": "Extract commodity name, variety/type, MSP for current season (kharif and rabi), and the previous season's MSP from Vikaspedia's Minimum Support Price page. Store the crop season (kharif/rabi) and marketing year. Capture the MSP value in INR per quintal.",
+  "required_fields": ["commodity_name", "msp_current"],
+  "cadence": "monthly"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "punjab_fertilizer_india",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://www.fertilizerindia.com/market/",
+  "description": "Extract fertilizer name (Urea, DAP, MOP, NPK, SSP, Micronutrients), type, MRP or market price, and state-wise availability from FertilizerIndia.com's market page. Capture any wholesale vs retail distinction. Store price per unit and any date shown.",
+  "required_fields": ["fertilizer_name", "price"],
+  "kind": "fertilizer",
+  "cadence": "weekly"
+}

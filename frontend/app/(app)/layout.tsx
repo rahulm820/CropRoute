@@ -18,23 +18,23 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   {
     label: "Search / Results",
-    href: "/app/results/wheat",
-    match: (p) => p.startsWith("/app/results"),
+    href: "/results/wheat",
+    match: (p) => p.startsWith("/results"),
   },
   {
     label: "Collectors",
-    href: "/app/collectors",
-    match: (p) => p.startsWith("/app/collectors"),
+    href: "/collectors",
+    match: (p) => p.startsWith("/collectors"),
   },
   {
     label: "State",
-    href: "/app/state",
-    match: (p) => p.startsWith("/app/state"),
+    href: "/state",
+    match: (p) => p.startsWith("/state"),
   },
 ];
 
 /**
- * AppLayout — persistent shell for all /app/* routes.
+ * AppLayout — persistent shell for all app routes.
  *
  * Top nav bar with:
  *   - Logo/wordmark (text)
@@ -105,7 +105,7 @@ export default function AppLayout({
       <nav className="app-nav" aria-label="Primary navigation">
         <div className="app-nav-inner">
           {/* Logo / wordmark */}
-          <Link href="/app/results/wheat" className="app-nav-logo" id="nav-logo">
+          <Link href="/results/wheat" className="app-nav-logo" id="nav-logo">
             <svg
               width="24"
               height="24"

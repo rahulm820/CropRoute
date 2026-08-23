@@ -1,0 +1,9 @@
+{
+  "name": "punjab_hbl_agri_news",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://www.thehindubusinessline.com/economy/agri-business/",
+  "description": "Extract headline, short summary, article URL, image URL, video URL if present, publisher (The Hindu BusinessLine), and published date from agriculture news articles on the Agri Business section. Keep article URLs only; do not store full text.",
+  "required_fields": ["headline", "url"],
+  "kind": "news",
+  "cadence": "6h"
+}

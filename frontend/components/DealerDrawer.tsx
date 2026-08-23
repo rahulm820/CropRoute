@@ -123,7 +123,7 @@ function DrawerSkeleton({ state }: { state: string }) {
       <div className="flex items-center gap-3 py-2">
         <div className="dealer-drawer-pulse-dot" />
         <p className="text-[13px] leading-[18px] text-text-muted">
-          Fetching contacts from the {state} APMC portal…
+          Fetching verified contacts for {state}…
         </p>
       </div>
 

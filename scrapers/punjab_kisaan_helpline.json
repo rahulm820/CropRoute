@@ -1,0 +1,8 @@
+{
+  "name": "punjab_kisaan_helpline",
+  "collector_id": "c_TBD_RUN_BDATA",
+  "target_url": "https://www.kisaanhelpline.com/mandi-bhav",
+  "description": "Extract commodity name, market name, district, state, min price, max price, modal price, and date from the mandi bhav listing on Kisaan Helpline. Filter for Punjab rows if visible; otherwise extract all and tag by state.",
+  "required_fields": ["commodity_name", "modal_price", "market_name"],
+  "cadence": "daily"
+}

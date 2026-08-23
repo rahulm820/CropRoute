@@ -158,7 +158,7 @@ export default function FertilizerCard({
               <path d="M2 12l10 5 10-5" />
             </svg>
           }
-          message={`No fertilizer price data scraped for ${stateName} yet — run the fertilizer_retail collector.`}
+          message={`No fertilizer price data for ${stateName} yet — run the fertilizer_retail collector.`}
         />
       </div>
     );

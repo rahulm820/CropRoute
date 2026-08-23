@@ -3,7 +3,19 @@
  * All backend API interactions must go through this module.
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+/**
+ * Browser calls go to the published host port; server components run INSIDE
+ * the compose network and must reach the backend by service name. Without the
+ * split, every server-side fetch hits localhost:<next's own port> and dies.
+ */
+function resolveBaseUrl(): string {
+  if (typeof window === "undefined") {
+    return process.env.SERVER_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+}
+
+const BASE_URL = resolveBaseUrl();
 
 export interface FetchOptions extends RequestInit {
   params?: Record<string, string | number | boolean | undefined>;
