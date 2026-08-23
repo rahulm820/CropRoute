@@ -71,15 +71,53 @@ persisted by an ingest layer into domain tables.
   crop knowledge, posts, collector runs); Redis holds the search/weather caches plus the
   self-heal baselines and strike counters.
 
-### Bright Data features used
+## Bright Data — the core of this project
 
-| Feature | Purpose |
-|---|---|
-| **Scraper Studio collectors** | One collector per source; plain-English extraction schema |
-| **Trigger API** (`POST /dca/trigger`) | Queue a collection run per collector |
-| **Snapshot polling** (`GET /dca/dataset`) | Await rows; empty array = legitimate result |
-| **Re-derive on breakage** | Self-heal asks Studio to re-extract from the description |
-| **Per-source configs in repo** | `scrapers/*.json` registry with required fields for scoring |
+Scraping is not a feature of CropRoute, it **is** CropRoute. Every price row, dealer
+phone number, news card and fertilizer quote in the product exists because a Bright Data
+collector fetched it. The stack is built around that assumption:
+
+```text
+scrapers/*.json ──▶ trigger (POST /dca/trigger) ──▶ poll snapshot (GET /dca/dataset)
+                                                                    │
+   Postgres tables ◀── ingest_service (news / fertilizer / dealers) ◀┘
+        │                      ▲
+        │                      │ hourly monitor: completeness vs rolling baseline
+        └── provenance chips ◀─┴── broken? re-derive from description → verify heal
+```
+
+### What gets scraped
+
+| Source type | Collectors (`scrapers/*.json`) | Lands in |
+|---|---|---|
+| Mandi / APMC networks | `punjab_apmc`, `mp_apmc`, `up_apmc` | `dealers` (lazy enrichment on mandi views) |
+| Dealer marketplaces | `punjab_indiamart_dealers` | `dealers` — names, phones, addresses per mandi |
+| Agri news publishers | `punjab_agri_news_tribune`, `punjab_hbl_agri_news`, `punjab_agri_news_krishijagran`, … | `news` — upserted by URL, video URLs kept for embeds |
+| Fertilizer retailers | `punjab_bighaat_fertilizer`, `punjab_fertilizer_india`, `punjab_fertilizer_prices` | `fertilizer_prices` — snapshots with derived price-per-kg |
+| Price feeds | `punjab_mandipulse`, `punjab_krishipulse`, `punjab_vikaspedia_msp`, … | scored for completeness today; prices-table ingest is next |
+
+Each config declares the collector's plain-English extraction description, its
+**required fields** (what the self-heal detector watches), an **ingest `kind`**
+(`news` / `fertilizer` / `dealers`) and a cadence.
+
+### How Bright Data is used
+
+- **Scraper Studio collectors** — one per source, described in plain English; Studio owns
+  the parsing, we own the contract (`required_fields`) and the persistence.
+- **Trigger & snapshot API** — `POST /dca/trigger` queues a run, `GET /dca/dataset`
+  polls until the body becomes a JSON array. Their documented error semantics drive our
+  retry shape: 4xx fails fast (a bad token never becomes data), 5xx retries with
+  exponential backoff, and an empty array is treated as a legitimate finished snapshot.
+- **Self-healing via re-derive** — when required fields drop below baseline, the monitor
+  asks Studio to re-derive the extraction from the collector's own description, then a
+  verification pass must meet the baseline before the state flips to `self_healed`.
+- **Provenance contract** — every ingested row stores `source_url` + `scraped_at` +
+  collector name, which is what makes the UI's provenance chips real instead of decorative.
+
+> Until collector IDs are provisioned (configs carry `c_TBD_RUN_BDATA` placeholders),
+> runs report honestly as `failed — not provisioned` rather than faking green, and the
+> demo path runs on seeded market data. Dropping real IDs into the JSONs switches the
+> same pipeline to live sources with zero code changes.
 
 ## Quick start
 
@@ -243,4 +281,5 @@ Start at [CLAUDE.md](CLAUDE.md) if you are an agent,
 | [docs/SELF-HEAL.md](docs/SELF-HEAL.md) | Collector state machine and the demo break/heal |
 <!-- | [docs/BACKLOG.md](docs/BACKLOG.md) | Issues 1–40 with status | -->
 | [docs/DEMO.md](docs/DEMO.md) | Demo runbook |
+| [docs/video.md](docs/video.md) | 5-minute demo video script with shot list |
 | [scrapers/README.md](scrapers/README.md) | Collector registry |
